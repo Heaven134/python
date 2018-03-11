@@ -4,6 +4,7 @@ from fans.lib import tool
 import types
 import urllib
 import re
+import sys
 from random import choice
 
 class Weibo:
@@ -166,3 +167,173 @@ class Weibo:
         if sendresult.has_key("errno"):
             return False
         return True
+
+    #浏览某用户
+    def person_browse(self,url_param,uid):
+        uid = str(uid)
+        if type(url_param) is not types.DictType:
+            if type(url_param) is types.StringType:
+                url_param = tool.url2Dict(url_param)
+            else:
+                return {}
+        cururl_para = tool.url2Dict("https://api.weibo.cn/2/stories/exist?gsid=_2A253UqW1DeRxGeBK61QW8i_EzzuIHXVSSb59rDV6PUJbkdANLRHwkWpNR_4pDT5xGeh3D3L_tq3fphqWEtcPPV_8&wm=3333_2001&i=9b17ad6&b=0&from=107C293010&c=iphone&networktype=wifi&v_p=56&skin=default&v_f=1&s=3c8f3a0a&lang=zh_CN&sflag=1&ua=iPhone9,1__weibo__7.12.2__iphone__os11.1&ft=0&aid=01Av9tn9LLqR5apU_SfKnDUAO9Wacfs76KIEBqPTg2v5UOHNk.&moduleID=pagecard&uicode=10000198&featurecode=10000001&id=6004281123&mid=4195012604100383&luicode=10000001&_status_id=4195012604100383&rid=0_0_8_3080955430742652852&fromlog=100016406721847&lfid=100016406721847")
+        for param_k,param_v in url_param.items():
+            cururl_para[param_k] = param_v
+        cururl_para["uid"] = uid
+        url = "https://api.weibo.cn/2/stories/exist?" + urllib.urlencode(cururl_para)
+        url_content = tool.getUrlContent(url)
+
+        sys.sleep(4)
+        self.__person_profile(url_param,uid)
+        sys.sleep(5)
+        self.__person_unread_count(url_param,uid)
+        sys.sleep(6)
+        self.__person_cardlist(url_param,uid)
+        sys.sleep(6)
+        self.__person_clientchatpanel(url_param,uid)
+        sys.sleep(8)
+        self.__person_messmenu(url_param,uid)
+        sys.sleep(2)
+        self.__person_relation(url_param,uid)
+        return
+    #浏览某用户
+    def person_relation(self,url_param,uid):
+        uid = str(uid)
+        if type(url_param) is not types.DictType:
+            if type(url_param) is types.StringType:
+                url_param = tool.url2Dict(url_param)
+            else:
+                return {}
+        cururl_para = tool.url2Dict("https://api.weibo.cn/2/users/relation?gsid=_2A253UqW1DeRxGeBK61QW8i_EzzuIHXVSSb59rDV6PUJbkdANLRHwkWpNR_4pDT5xGeh3D3L_tq3fphqWEtcPPV_8&wm=3333_2001&i=9b17ad6&b=0&from=107C293010&c=iphone&networktype=wifi&v_p=56&skin=default&v_f=1&s=3c8f3a0a&lang=zh_CN&sflag=1&ua=iPhone9,1__weibo__7.12.2__iphone__os11.1&ft=0&aid=01Av9tn9LLqR5apU_SfKnDUAO9Wacfs76KIEBqPTg2v5UOHNk.&uicode=10000073&uid=6004281123&featurecode=10000001&luicode=10000198&fid=6004281123&lfid=1078036004281123&screen_name=%E6%A2%A8%E8%A7%86%E9%A2%91&has_block=1")
+        for param_k,param_v in url_param.items():
+            cururl_para[param_k] = param_v
+        cururl_para["uid"] = uid
+        cururl_para["fid"] = uid
+        cururl_para["lfid"] = "107803"+uid
+        url = "https://api.weibo.cn/2/users/relation?" + urllib.urlencode(cururl_para)
+        url_content = tool.getUrlContent(url)
+
+    #用户菜单
+
+    def __person_messmenu(self,url_param,uid):
+        uid = str(uid)
+        if type(url_param) is not types.DictType:
+            if type(url_param) is types.StringType:
+                url_param = tool.url2Dict(url_param)
+            else:
+                return {}
+        cururl_para = tool.url2Dict("https://api.weibo.cn/2/messages/menu_show?gsid=_2A253UqW1DeRxGeBK61QW8i_EzzuIHXVSSb59rDV6PUJbkdANLRHwkWpNR_4pDT5xGeh3D3L_tq3fphqWEtcPPV_8&wm=3333_2001&i=9b17ad6&b=0&from=107C293010&c=iphone&networktype=wifi&v_p=56&skin=default&v_f=1&s=3c8f3a0a&lang=zh_CN&sflag=1&ua=iPhone9,1__weibo__7.12.2__iphone__os11.1&ft=0&aid=01Av9tn9LLqR5apU_SfKnDUAO9Wacfs76KIEBqPTg2v5UOHNk.&uid=6004281123")
+        for param_k,param_v in url_param.items():
+            cururl_para[param_k] = param_v
+        cururl_para["uid"] = uid
+        url = "https://api.weibo.cn/2/messages/menu_show?" + urllib.urlencode(cururl_para)
+        url_content = tool.getUrlContent(url)
+        return url_content
+
+    #用户聊天面版
+
+    def __person_clientchatpanel(self,url_param,uid):
+        uid = str(uid)
+        if type(url_param) is not types.DictType:
+            if type(url_param) is types.StringType:
+                url_param = tool.url2Dict(url_param)
+            else:
+                return {}
+        cururl_para = tool.url2Dict("https://api.weibo.cn/2/client/chatpanel?gsid=_2A253UqW1DeRxGeBK61QW8i_EzzuIHXVSSb59rDV6PUJbkdANLRHwkWpNR_4pDT5xGeh3D3L_tq3fphqWEtcPPV_8&wm=3333_2001&i=9b17ad6&b=0&from=107C293010&c=iphone&networktype=wifi&v_p=56&skin=default&v_f=1&s=3c8f3a0a&lang=zh_CN&sflag=1&ua=iPhone9,1__weibo__7.12.2__iphone__os11.1&ft=0&aid=01Av9tn9LLqR5apU_SfKnDUAO9Wacfs76KIEBqPTg2v5UOHNk.&")
+        for param_k,param_v in url_param.items():
+            cururl_para[param_k] = param_v
+        url = "https://api.weibo.cn/2/client/chatpanel?" + urllib.urlencode(cururl_para)
+        url_content = tool.getUrlContent(url)
+        return url_content
+
+    #用户cardlist
+
+    def __person_cardlist(self,url_param,uid):
+        uid = str(uid)
+        if type(url_param) is not types.DictType:
+            if type(url_param) is types.StringType:
+                url_param = tool.url2Dict(url_param)
+            else:
+                return {}
+        cururl_para = tool.url2Dict("https://api.weibo.cn/2/cardlist?gsid=_2A253UqW1DeRxGeBK61QW8i_EzzuIHXVSSb59rDV6PUJbkdANLRHwkWpNR_4pDT5xGeh3D3L_tq3fphqWEtcPPV_8&wm=3333_2001&i=9b17ad6&b=0&from=107C293010&c=iphone&networktype=wifi&v_p=56&skin=default&v_f=1&s=3c8f3a0a&lang=zh_CN&sflag=1&ua=iPhone9,1__weibo__7.12.2__iphone__os11.1&ft=0&aid=01Av9tn9LLqR5apU_SfKnDUAO9Wacfs76KIEBqPTg2v5UOHNk.&mid=4195012604100383&_status_id=4195012604100383&count=20&luicode=10000001&containerid=1078036004281123&featurecode=10000001&uicode=10000198&fid=1078036004281123&rid=0_0_8_3080955430742652852&fromlog=100016406721847&need_head_cards=0&page=1&lfid=100016406721847&moduleID=pagecard&since_id=4194771415644594_4194791794737655_20180111_-1")
+        for param_k,param_v in url_param.items():
+            cururl_para[param_k] = param_v
+        cururl_para["containerid"] = "107803"+uid
+        cururl_para["fid"] = "107803"+uid
+        url = "https://api.weibo.cn/2/cardlist?" + urllib.urlencode(cururl_para)
+        url_content = tool.getUrlContent(url)
+
+        sys.sleep(2)
+        cururl_para["containerid"] = "107803"+uid+"_-_mcn"
+        cururl_para["fid"] = "107803"+uid+"_-_mcn"
+        url = "https://api.weibo.cn/2/cardlist?" + urllib.urlencode(cururl_para)
+        url_content = tool.getUrlContent(url)
+
+        sys.sleep(2)
+        cururl_para["containerid"] = "230283"+uid
+        cururl_para["fid"] = "230283"+uid
+        url = "https://api.weibo.cn/2/cardlist?" + urllib.urlencode(cururl_para)
+        url_content = tool.getUrlContent(url)
+        return url_content
+
+    ###
+    def __person_unread_count(self,url_param,uid):
+        uid = str(uid)
+        if type(url_param) is not types.DictType:
+            if type(url_param) is types.StringType:
+                url_param = tool.url2Dict(url_param)
+            else:
+                return {}
+        cururl_para = tool.url2Dict("https://api.weibo.cn/2/remind/unread_count?wm=3333_2001&i=9b17ad6&b=0&from=107C293010&c=iphone&networktype=wifi&v_p=56&skin=default&v_f=1&lang=zh_CN&sflag=1&ua=iPhone9,1__weibo__7.12.2__iphone__os11.1&ft=0&aid=01Av9tn9LLqR5apU_SfKnDUAO9Wacfs76KIEBqPTg2v5UOHNk.&with_page_group=1&with_settings=1&s=3c8f3a0a&with_comment_attitude=1&gsid=_2A253UqW1DeRxGeBK61QW8i_EzzuIHXVSSb59rDV6PUJbkdANLRHwkWpNR_4pDT5xGeh3D3L_tq3fphqWEtcPPV_8&with_common_cmt=1")
+        for param_k,param_v in url_param.items():
+            cururl_para[param_k] = param_v
+        url = "https://api.weibo.cn/2/remind/unread_count?" + urllib.urlencode(cururl_para)
+        url_content = tool.getUrlContent(url)
+        return url_content
+
+    #get_item
+
+    def __person_get_item(self,url_param,uid):
+        uid = str(uid)
+        if type(url_param) is not types.DictType:
+            if type(url_param) is types.StringType:
+                url_param = tool.url2Dict(url_param)
+            else:
+                return {}
+        cururl_para = tool.url2Dict("https://api.weibo.cn/2/container/get_item?gsid=_2A253UqW1DeRxGeBK61QW8i_EzzuIHXVSSb59rDV6PUJbkdANLRHwkWpNR_4pDT5xGeh3D3L_tq3fphqWEtcPPV_8&wm=3333_2001&i=9b17ad6&b=0&from=107C293010&c=iphone&networktype=wifi&v_p=56&skin=default&v_f=1&s=3c8f3a0a&lang=zh_CN&sflag=1&ua=iPhone9,1__weibo__7.12.2__iphone__os11.1&ft=0&aid=01Av9tn9LLqR5apU_SfKnDUAO9Wacfs76KIEBqPTg2v5UOHNk.&uicode=10000198&itemid=2306186004281123_-_APPLICATION&featurecode=10000001&luicode=10000001&fromlog=100016406721847&fid=2302836004281123&lfid=100016406721847")
+        for param_k,param_v in url_param.items():
+            cururl_para[param_k] = param_v
+        cururl_para["itemid"] = "230618"+uid+"_-_APPLICATION"
+        cururl_para["fid"] = "230618"+uid
+        url = "https://api.weibo.cn/2/container/get_item?" + urllib.urlencode(cururl_para)
+        url_content = tool.getUrlContent(url)
+
+        cururl_para["itemid"] = "230618"+uid+"_-_HOTMBLOG"
+        cururl_para["fid"] = "230283"+uid
+        url = "https://api.weibo.cn/2/container/get_item?" + urllib.urlencode(cururl_para)
+        url_content = tool.getUrlContent(url)
+
+
+        cururl_para["itemid"] = "230618"+uid+"_-_TOPICLIST"
+        url = "https://api.weibo.cn/2/container/get_item?" + urllib.urlencode(cururl_para)
+        url_content = tool.getUrlContent(url)
+
+        cururl_para["itemid"] = "230618"+uid+"_-_ARTICLE"
+        url = "https://api.weibo.cn/2/container/get_item?" + urllib.urlencode(cururl_para)
+        url_content = tool.getUrlContent(url)
+
+        cururl_para["itemid"] = "230618"+uid+"_-_HONGBAOCARD"
+        url = "https://api.weibo.cn/2/container/get_item?" + urllib.urlencode(cururl_para)
+        url_content = tool.getUrlContent(url)
+        return url_content
+
+
+    #浏览用户信息
+    def __person_profile(self,url_param,uid):
+
+        self.rand_url()
+        userinfo_param = tool.url2Dict("https://api.weibo.cn/2/profile?gsid=_2A253UqW1DeRxGeBK61QW8i_EzzuIHXVSSb59rDV6PUJbkdANLRHwkWpNR_4pDT5xGeh3D3L_tq3fphqWEtcPPV_8&wm=3333_2001&i=9b17ad6&b=0&from=107C293010&c=iphone&networktype=wifi&v_p=56&skin=default&v_f=1&s=3c8f3a0a&lang=zh_CN&sflag=1&ua=iPhone9,1__weibo__7.12.2__iphone__os11.1&ft=0&aid=01Av9tn9LLqR5apU_SfKnDUAO9Wacfs76KIEBqPTg2v5UOHNk.&uicode=10000198&moduleID=pagecard&featurecode=10000001&mid=4195012604100383&luicode=10000001&_status_id=4195012604100383&rid=0_0_8_3080955430742652852&fromlog=100016406721847&user_domain=6004281123&lfid=100016406721847&profile_entry_key=1")
+        for param_k,param_v in url_param.items():
+            userinfo_param[param_k] = param_v
+        userinfo_param["user_domain"] = uid
+        profile_url = "https://api.weibo.cn/2/profile?" + urllib.urlencode(userinfo_param)

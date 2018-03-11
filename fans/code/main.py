@@ -173,16 +173,7 @@ def sendMsgToAll(text_arr):
         str = ','.join(text_arr)
         redisObj.delete("msg:"+str)
         index = 0
-        param=[{"text":"","gsid":"_2A253QhvhDeRxGeBK6loX-CvPzjyIHXVSVigprDV6PUJbkdANLXT6kWpNR8iRakJk0MsW2ydDL3e-mPsy61wijpuN","c":"android","s":"a26842eb"},
-               {"text":"","gsid":"_2A253Tiu_DeTxGeBK6FUZ8CbOyTiIHXVSWjh3rDV6PUJbi9ANLRDjkWpNR6uX1DmujTwilh1znszrjjb1-ulqR13p","c":"android","s":"f8367093"},
-               {"text":"","gsid":"_2AkMtF9sLf8NhqwJRmPERxGjlbY5xzwDEieKbSyrQJRMxHRl-wT9jqn0ItRV6Bpf1yKtXKLSpBsWMIhSSoZH4a_UnveOO","c":"android","s":"2e844781"},
-               {"text":"","gsid":"_2AkMtFiRWf8NhqwJRmPEWxGPra4h3zQ7EieKbStWNJRMxHRl-wT9kqm0htRV6Bu124lTCBA5LPZ__HkNmxbbLulOE_5mU","c":"android","s":"e7111929"},
-               {"text":"","gsid":"_2A253QyRGDeRxGeNG61sZ8C3JwjiIHXVSWTCOrDV6PUJbkdANLRffkWpNS5Ur8Rl21xhCn7AaQTDvR5RYVuLSE55-","c":"android","s":"7d5f5fa8"},
-               {"text":"","gsid":"_2AkMtF8Dif8NhqwJRmPAXy2nmb4RwzwvEieKbSzE5JRMxHRl-wT9kqkIbtRV6BZdIWKAWH8yeHWLrObLuwGm_mG5mVpql","c":"android","s":"1e85a870"},
-               {"text":"","gsid":"_2AkMtF9zqf8NhqwJRmPERxGjlbIt-zQHEieKbSy0xJRMxHRl-wT9kqm9atRV6BpfyBYcdgoD9veV_bMEvToqyirtZb8zo","c":"android","s":"67eec36b"},
-               {"text":"","gsid":"_2A253TyNLDeTxGeBK71sQ9S7JzzSIHXVSXTGDrDV6PUJbltAKLXT-kWpNR6KobQVKnLQZXbmnEYYIPAO9z0t1ilbx","c":"android","s":"23fe3f69"},
-               {"text":"","gsid":"_2A253TyBXDeRxGeBK6FYW8SnPwz-IHXVSXTSfrDV6PUJbkdAKLXXakWpNR9jcqE936fHteT80n5vubgvsXluBrN98","c":"android","s":"2a925eb0"},
-               {"text":"","gsid":"_2AkMtF9t2f8NhqwJRmPAWz2rmaYR2yg_EieKbSyqtJRMxHRl-wT9kqmIStRV6BZN_2HH4MfeAozmyMKJKm2VPphIGwD1f","c":"android","s":"7f83ecf1"},
+        param=[{"text":"","gsid":"_2A253XBFGDeRxGeBK61QW8i_EzzuIHXVSSCOOrDV6PUJbkdANLRHwkWpNR_4pDSfRm5CO3QyFj6AwfbnPvP6QllrJ","c":"iphone","s":"3c8f3a0a"},
                ]
         while True:
             uid_arr = redisObj.zrange(user_id,index,index+10)
@@ -201,19 +192,15 @@ def sendMsgToAll(text_arr):
                     if has_send or -1 < verified_type:
                         continue
                     print uid
-                    seconds = random.randint(40,50)
+                    seconds = random.randint(30,40)
                     time.sleep(seconds)
                     send = False
                     for text in text_arr:
-                        index = random.randint(0,len(param)-1)
-                        print index
-                        param[index]["text"]=text
-                        send = weibo_obj.send_msg(param[index],uid)
+                        param[0]["text"]=text
+                        send = weibo_obj.send_msg(param[0],uid)
                         time.sleep(5)
                     if send:
                         redisObj.sadd("msg:"+msgindex,uid)
-                    else:
-                        del param[index]
             else:
                 break
 
